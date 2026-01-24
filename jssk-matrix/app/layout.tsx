@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/home/Navbar"; // Import Navbar
 import Footer from "@/components/home/Footer"; // Import Footer
-
+import { Toaster } from 'sonner'; // <--- Import this
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -25,7 +25,7 @@ export default function RootLayout({
         
         {/* {children} represents the unique content of the page you are on (Home, Contact, etc.) */}
         {children}
-
+<Toaster position="top-center" richColors />
         {/* Footer sits at the bottom of every page */}
         <Footer />
         

@@ -2,40 +2,52 @@
 import { User, Mail, Phone, Send, Info, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { toast } from 'sonner'; // <--- Import toast
 
 export default function SupportForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // 1. STOP double clicks immediately
+    if (isSubmitting) return;
+
     setIsSubmitting(true);
 
-    const formData = new FormData(e.currentTarget);
+    // 2. SAFETY: Save the form into a variable BEFORE 'await'
+    // This ensures we don't lose the reference while waiting for the network
+    const form = e.currentTarget;
+    const formData = new FormData(form);
     const data = Object.fromEntries(formData);
-
+   
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch('/api/contact', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
 
       if (response.ok) {
-        alert("Message sent successfully!");
-        (e.target as HTMLFormElement).reset();
+        toast.success("Message sent successfully!");
+        
+        // 3. Reset using the SAVED variable, not 'e.currentTarget'
+        form.reset(); 
       } else {
-        alert("Failed to send message.");
+        toast.error("Failed to send message.");
       }
     } catch (error) {
-      alert("Error sending message.");
+      toast.error("Something went wrong.", {
+          description: "Please check your connection."
+      });
     } finally {
       setIsSubmitting(false);
     }
-  }
+  };
 
+  // ... (Rest of your JSX remains exactly the same)
   return (
     <div className="glass-panel p-6 md:p-8 rounded-2xl h-full border border-white/10 relative overflow-hidden transition-all duration-500 hover:border-blue-500/50 hover:shadow-[0_0_60px_rgba(59,130,246,0.1)] ">
-      
       {/* Decorative Glow */}
       <div className="absolute -top-20 -right-20 w-40 h-40 bg-blue-500/20 blur-[50px] rounded-full pointer-events-none"></div>
 
@@ -51,7 +63,6 @@ export default function SupportForm() {
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <User className="h-[18px] w-[18px] text-slate-600 group-focus-within:text-blue-500 group-hover:text-blue-400 transition-colors" />
             </div>
-            {/* ADDED name="name" HERE */}
             <input type="text" id="name" name="name" className="w-full bg-[#09090b] border border-white/10 text-white text-sm rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 hover:border-blue-500/30 block pl-10 p-3 placeholder-slate-600 transition-all outline-none" placeholder="Enter your full name" required />
           </div>
         </div>
@@ -64,7 +75,6 @@ export default function SupportForm() {
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Mail className="h-[18px] w-[18px] text-slate-600 group-focus-within:text-blue-500 group-hover:text-blue-400 transition-colors" />
               </div>
-              {/* ADDED name="email" HERE */}
               <input type="email" id="email" name="email" className="w-full bg-[#09090b] border border-white/10 text-white text-sm rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 hover:border-blue-500/30 block pl-10 p-3 placeholder-slate-600 transition-all outline-none" placeholder="name@company.com" required />
             </div>
           </div>
@@ -76,7 +86,6 @@ export default function SupportForm() {
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Phone className="h-[18px] w-[18px] text-slate-600 group-focus-within:text-blue-500 group-hover:text-blue-400 transition-colors" />
               </div>
-              {/* ADDED name="phone" HERE */}
               <input type="tel" id="phone" name="phone" className="w-full bg-[#09090b] border border-white/10 text-white text-sm rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 hover:border-blue-500/30 block pl-10 p-3 placeholder-slate-600 transition-all outline-none" placeholder="+91 98765 43210" required />
             </div>
           </div>
@@ -85,7 +94,6 @@ export default function SupportForm() {
         {/* Message Input */}
         <div className="space-y-1.5">
           <label htmlFor="message" className="text-xs font-medium text-slate-400 ml-1">Message</label>
-          {/* ADDED name="message" HERE */}
           <textarea id="message" name="message" rows={5} className="w-full bg-[#09090b] border border-white/10 text-white text-sm rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 hover:border-blue-500/30 block p-3 placeholder-slate-600 transition-all resize-none outline-none" placeholder="How can we help you?"></textarea>
         </div>
 

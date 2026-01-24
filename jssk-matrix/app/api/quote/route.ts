@@ -31,7 +31,7 @@ export async function POST(request: Request) {
           <h2 style="color: #2563eb;">${subjectTitle}</h2>
           
           <div style="background: #f9fafb; padding: 15px; border-radius: 8px; border: 1px solid #e5e7eb;">
-            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Name:</strong> ${contact_person}</p>
             <p><strong>Email:</strong> ${email}</p>
             <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
             

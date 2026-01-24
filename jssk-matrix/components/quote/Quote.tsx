@@ -1,44 +1,44 @@
 "use client";
 
-import { MessageSquare, Building2, User, Phone, Mail, Info, ArrowRight } from 'lucide-react';
+import { MessageSquare, Building2, User, Phone, Mail, Info, ArrowRight, Loader2 } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 export default function Quote() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // 1. STOP double clicks immediately
+    if (isSubmitting) return;
+
     setIsSubmitting(true);
 
-    // 1. Gather data from the form
-    const formData = new FormData(e.currentTarget);
+    // 2. SAFETY: Save the form into a variable BEFORE 'await'
+    // This ensures we don't lose the reference while waiting for the network
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
    
-    const data = {
-      company: formData.get('company'),
-      contact_person: formData.get('contact_person'),
-      phone: formData.get('phone'),
-      email: formData.get('email'),
-      message: formData.get('message'),
-    };
-    console.log(data)
     try {
-      // 2. Send data to your backend API
-      const response = await fetch('/api/quote', {
+      const response = await fetch('/api/quote', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
 
-      // 3. Handle response
       if (response.ok) {
-        alert('Quote request sent successfully! We will contact you soon.');
-        (e.target as HTMLFormElement).reset(); // Clear the form
+        toast.success("Message sent successfully!");
+        
+        // 3. Reset using the SAVED variable, not 'e.currentTarget'
+        form.reset(); 
       } else {
-        alert('Failed to send request. Please try again later.');
+        toast.error("Failed to send message.");
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred. Please check your internet connection.');
+      toast.error("Something went wrong.", {
+          description: "Please check your connection."
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -104,7 +104,7 @@ export default function Quote() {
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <Phone className="h-4 w-4 text-slate-600 group-focus-within:text-blue-500 transition-colors" />
                   </div>
-          <input type="tel"pattern="[0-9]{10}" id="phone" name="phone" className="w-full bg-[#09090b] border border-white/10 text-white text-sm rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5 placeholder-slate-600 transition-all outline-none" placeholder="+91 98765 43210" required />
+                  <input type="tel" pattern="[0-9]{10}" id="phone" name="phone" className="w-full bg-[#09090b] border border-white/10 text-white text-sm rounded-lg focus:ring-1 focus:ring-blue-500 focus:border-blue-500 block pl-10 p-2.5 placeholder-slate-600 transition-all outline-none" placeholder="+91 98765 43210" required />
                 </div>
               </div>
 
@@ -139,8 +139,11 @@ export default function Quote() {
                 disabled={isSubmitting}
                 className="w-full group bg-white text-black hover:bg-slate-200 font-semibold rounded-lg text-sm px-5 py-3 text-center transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? 'Sending...' : 'Submit Request'}
-                {!isSubmitting && <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />}
+                {isSubmitting ? (
+                    <>Sending... <Loader2 className="w-4 h-4 animate-spin"/></>
+                ) : (
+                    <>Submit Request <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" /></>
+                )}
               </button>
               <p className="text-center text-[10px] text-slate-600 mt-4">
                 By submitting this form, you agree to our privacy policy regarding your data.
