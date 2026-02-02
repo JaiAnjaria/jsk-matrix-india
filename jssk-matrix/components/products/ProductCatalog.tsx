@@ -1,9 +1,10 @@
 "use client";
 import { useState } from 'react';
-import { Droplets, Zap, Sun, Sparkles, Feather, Gem, Layers, Star, Box } from 'lucide-react';
+import { Droplets, Zap, Sun, Sparkles, Feather, Gem, Layers, Star, Box, Shield } from 'lucide-react';
 
 // Product Data
 const products = [
+  // --- EXISTING PRODUCTS ---
   {
     id: 1,
     categories: ['wet', 'matte'],
@@ -107,6 +108,74 @@ const products = [
     desc: 'PET based films with excellent gloss and good scuff resistance. Ideal for single side.',
     features: ['High Gloss & Stiffness', 'Ink Bonding', 'Scuff Resistance'],
     uses: ['Menu Cards & Maps', 'Certificates', 'Photo Albums']
+  },
+
+  // --- NEW ADDITIONS ---
+
+  {
+    id: 9,
+    categories: ['thermal', 'matte', 'specialty'],
+    icon: Feather,
+    color: 'text-pink-500',
+    borderColor: 'hover:border-pink-500/30',
+    tagColor: 'text-pink-400',
+    tag: 'Specialty Thermal',
+    title: 'Thermal Velvet Film',
+    desc: 'Premium BOPP film with a rich, soft-touch velvet surface. Offers a luxurious tactile feel.',
+    features: ['Soft Velvet Touch', 'High Scuff Resistance', 'Rich Color Depth'],
+    uses: ['Luxury Perfume Boxes', 'Coffee Table Books', 'Premium Visiting Cards']
+  },
+  {
+    id: 10,
+    categories: ['wet', 'matte', 'specialty'],
+    icon: Feather, // Reusing Feather for "Soft/Velvet" feel
+    color: 'text-rose-500',
+    borderColor: 'hover:border-rose-500/30',
+    tagColor: 'text-rose-400',
+    tag: 'Specialty Wet',
+    title: 'Wet Velvet Film',
+    desc: 'Velvet touch film designed for wet lamination. Provides a feather-soft finish to prints.',
+    features: ['Luxurious Tactile Feel', 'Printable Surface', 'Excellent Bonding'],
+    uses: ['Cosmetic Packaging', 'High-end Brochures', 'Luxury Cartons']
+  },
+  {
+    id: 11,
+    categories: ['thermal', 'matte', 'specialty'],
+    icon: Shield, // New Icon for durability
+    color: 'text-emerald-500',
+    borderColor: 'hover:border-emerald-500/30',
+    tagColor: 'text-emerald-400',
+    tag: 'Specialty Thermal',
+    title: 'Thermal Anti-Scratch',
+    desc: 'Matte film with a specially treated hard surface to resist scratches and scuff marks.',
+    features: ['Scratch Resistant', 'Smooth Matte Finish', 'Long-lasting Durability'],
+    uses: ['Electronic Packaging', 'Soap Cartons', 'Frequent Handling Items']
+  },
+  {
+    id: 12,
+    categories: ['thermal', 'gloss', 'specialty'],
+    icon: Sparkles,
+    color: 'text-fuchsia-500',
+    borderColor: 'hover:border-fuchsia-500/30',
+    tagColor: 'text-fuchsia-400',
+    tag: 'Specialty Holography',
+    title: 'Thermal Holography',
+    desc: 'Specialty film with embedded holographic patterns for striking visual effects and security.',
+    features: ['Prismatic Rainbow Effect', 'Security Feature', 'Eye-Catching Design'],
+    uses: ['Gift & Toy Boxes', 'Security Seals', 'Promotional Materials']
+  },
+  {
+    id: 13,
+    categories: ['thermal', 'matte', 'specialty'],
+    icon: Layers,
+    color: 'text-amber-500',
+    borderColor: 'hover:border-amber-500/30',
+    tagColor: 'text-amber-400',
+    tag: 'Specialty Texture',
+    title: 'Premium Leather Film',
+    desc: 'Thermal film with a realistic leather texture. Adds a premium look and tactile grip.',
+    features: ['Realistic Leather Texture', 'Premium Aesthetic', 'Anti-Slip Grip'],
+    uses: ['Luxury Liquor Boxes', 'Diaries & Journals', 'Jewelry Packaging']
   }
 ];
 
@@ -176,8 +245,6 @@ export default function ProductCatalog() {
                     {product.desc}
                   </p>
                 </div>
-
-                {/* MICRON BUTTONS REMOVED HERE AS REQUESTED */}
 
                 <div className="grid grid-cols-2 gap-4 mt-auto border-t border-white/5 pt-4 relative z-10">
                   <div>

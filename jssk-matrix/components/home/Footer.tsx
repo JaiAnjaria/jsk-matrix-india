@@ -18,7 +18,7 @@ export default function Footer() {
             <p className="text-slate-500 leading-relaxed mb-8 max-w-sm font-normal">
               Leading distributor of high-quality branded lamination and packaging films, delivering customized solutions across India .
             </p>
-            <div className="flex gap-3">
+            {/* <div className="flex gap-3">
               <Link href="#" className="w-10 h-10 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-blue-600/20 hover:border-blue-500/30 transition-all group">
                 <Linkedin className="w-5 h-5 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
               </Link>
@@ -28,7 +28,7 @@ export default function Footer() {
               <Link href="#" className="w-10 h-10 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-blue-600/20 hover:border-blue-500/30 transition-all group">
                 <Instagram className="w-5 h-5 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
               </Link>
-            </div>
+            </div> */}
           </div>
 
           {/* Spacer Column */}
